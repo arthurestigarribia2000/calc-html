@@ -1,316 +1,690 @@
+<!DOCTYPE html>
 <html lang="pt-br">
 <head>
 	<meta charset="utf-8">
-	<meta name="viewport" content="width: device-width, user-scalable: no">
-	<title>Calculadora básica</title>
-	<style>
-		html {
-			padding-left: 5%;
-			padding-right: 5%;
-			padding-top: 2%;
-			padding-bottom: 2%;
-		}
-		
-		h1 {
-			font-family: 'Lexend', 'Arial Nova', Arial, Helvetica, sans-serif;
-			font-size: 28pt;
-		}
-
-		h2 {
-			font-family: 'Lexend', 'Arial Nova', Arial, Helvetica, sans-serif;
-			font-size: 20pt;
-		}
-		
-		p, #resultado_calculo, #resultado_conversao {
-			font-family: 'Bitter', 'Arial Nova', Arial, Helvetica, sans-serif;
-			font-size: 14pt;
-		}
-
-		#inicio {
-			display: block;
-		}
-		
-		#calculadora, #conversor {
-			display: none;
-		}
-
-		input, select, button {
-			font-family: 'Bitter', 'Arial Nova', Arial, Helvetica, sans-serif;
-			font-size: 12pt;
-			padding-top: 2%;
-			padding-bottom: 2%;
-			width: 100%;
-		}
-	</style>
-	<script>
-		function round(numero) {
-			if(!isNaN(numero) && isFinite(numero))
-				return parseFloat((parseFloat(numero)).toFixed(10))
-			else
-				return "Resultado inválido"
-		}
-
-		function carregaCalculadora() {
-			opcao = document.getElementById('opcao').value
-
-			ids = ['inicio', 'calculadora', 'conversor']
-
-			for (i = 0; i < ids.length; i++) {
-				document.getElementById(ids[i]).style.display = 'none'
-			}
-		}
-		
-		function selecionaCalculadora() {
-			opcao = document.getElementById('opcao').value
-
-			ids = ['inicio', 'calculadora', 'conversor']
-
-			for (i = 0; i < ids.length; i++) {
-				if (opcao == i) {
-					document.getElementById(ids[i]).style.display = 'block'
-				} else {
-					document.getElementById(ids[i]).style.display = 'none'
-				}
-			}
-		}
-
-		function fatorial(numero) {
-			if(numero == 0 || numero == 1) {
-				return 1
-			} else if(numero % 1 != 0 || numero < 0) {
-				return NaN
-			}
-			
-			fat = 1
-
-			for(i = 1; i <= numero; i++) {
-				fat = fat * i
-			}
-
-			return fat
-		}
-
-		function calcula(num_a, num_b) {
-			a = parseFloat(round(num_a))
-			b = parseFloat(round(num_b))
-
-			return {
-				"operacao_soma": round(a + b),
-				"operacao_subtracao": round(a - b),
-				"operacao_multiplicacao": round(a * b),
-				"operacao_divisao": round(a / b),
-				"operacao_resto": round(a % b),
-				"operacao_potencia": round(a ** b),
-				"operacao_raiz": round(a ** (1 / b)),
-				"porcentagem_taxa": round(a * b / 100),
-				"porcentagem_aumento": round(a + a * b / 100),
-				"porcentagem_desconto": round(a - a * b / 100),
-				"bhaskara_delta": round(a * a - 4 * b),
-				"bhaskara_raiz_1": round((-a + Math.sqrt(a * a - 4 * b))/2),
-				"bhaskara_raiz_2": round((-a - Math.sqrt(a * a - 4 * b))/2),
-				"func_sqrt_a": round(Math.sqrt(a)),
-				"func_abs_a": round(Math.abs(a)),
-				"func_exp_a": round(Math.exp(a)),
-				"func_ln_a": round(Math.log(a)),
-				"func_log_a": round(Math.log10(a)),
-				"trig_sin_a": round(Math.sin(a)),
-				"trig_cos_a": round(Math.cos(a)),
-				"trig_tan_a": round(Math.tan(a)),
-				"trig_asin_a": round(Math.asin(a)),
-				"trig_acos_a": round(Math.acos(a)),
-				"trig_atan_a": round(Math.atan(a)),
-				"trig_sinh_a": round(Math.sinh(a)),
-				"trig_cosh_a": round(Math.cosh(a)),
-				"trig_tanh_a": round(Math.tanh(a)),
-				"trig_asinh_a": round(Math.asinh(a)),
-				"trig_acosh_a": round(Math.acosh(a)),
-				"trig_atanh_a": round(Math.atanh(a)),
-				"pitagoras_hipotenusa": round(Math.sqrt(a * a + b * b)),
-				"pitagoras_cateto": round(Math.sqrt(Math.abs(a * a - b * b))),
-				"comb_fact_a": round(fatorial(a)),
-				"comb_permut": round(fatorial(a) / fatorial(a - b)),
-				"comb_combin": round(fatorial(a) / (fatorial(b) * fatorial(a - b))),
-			}
-		}
-
-		function resp() {
-			a = document.getElementById("num_a").value
-			b = document.getElementById("num_b").value
-
-			c = calcula(a, b)
-
-			d = ""
-			
-			for (i in c) {
-				if (c.hasOwnProperty(i)) {
-					d += i + ": " + c[i] + "<br>"
-				}
-			}
-
-			document.getElementById("resultado_calculo").innerHTML = d
-		}
-
-		function carrega() {
-			cat = (parseInt(document.getElementById('cat').value) - 1) % 7
-
-			unidade_de = [[
-				{'simbolo': 'km', 'valor': 'n * 1000'},
-				{'simbolo': 'm', 'valor': 'n'},
-				{'simbolo': 'cm', 'valor': 'n * 0.01'},
-				{'simbolo': 'mm', 'valor': 'n * 0.001'},
-				{'simbolo': 'inch', 'valor': 'n * (1 / 0.0254)'},
-				{'simbolo': 'mi', 'valor': 'n * (1609.344)'},
-			], [
-				{'simbolo': 'km²', 'valor': 'n * 1000000'},
-				{'simbolo': 'm²', 'valor': 'n'},
-				{'simbolo': 'cm²', 'valor': 'n * 0.0001'},
-				{'simbolo': 'mm²', 'valor': 'n * 0.000001'},
-				{'simbolo': 'ha', 'valor': 'n * 10000'},
-			], [
-				{'simbolo': 'km³', 'valor': 'n * 1000000000'},
-				{'simbolo': 'm³', 'valor': 'n'},
-				{'simbolo': 'cm³', 'valor': 'n * 0.000001'},
-				{'simbolo': 'mm³', 'valor': 'n * 0.00000001'},
-				{'simbolo': 'L', 'valor': 'n * 0.001'},
-				{'simbolo': 'mL', 'valor': 'n * 0.000001'},
-			], [
-				{'simbolo': 't', 'valor': 'n * 1000000'},
-				{'simbolo': 'kg', 'valor': 'n * 1000'},
-				{'simbolo': 'g', 'valor': 'n'},
-				{'simbolo': 'mg', 'valor': 'n * 0.001'},
-			], [
-				{'simbolo': 'd', 'valor': 'n * (24 * 3600)'},
-				{'simbolo': 'h', 'valor': 'n * 3600'},
-				{'simbolo': 'min', 'valor': 'n * 60'},
-				{'simbolo': 's', 'valor': 'n'},
-				{'simbolo': 'ms', 'valor': 'n * 0.001'},
-			], [
-				{'simbolo': 'deg', 'valor': 'n'},
-				{'simbolo': 'grad', 'valor': 'n * (200 / 180)'},
-				{'simbolo': 'rad', 'valor': 'n * (Math.PI / 180)'},
-			], [
-				{'simbolo': 'C', 'valor': 'n'},
-				{'simbolo': 'F', 'valor': '(n - 32) / 1.8'},
-				{'simbolo': 'K', 'valor': 'n - 273.15'},
-			]]
-
-			vet1 = unidade_de[cat]
-
-			document.getElementById('unidade_de_1').innerHTML = "<select id='unidade_de'></select>"
-
-			for (i = 0; i < vet1.length; i++) {
-				document.getElementById('unidade_de').innerHTML += "<option value='" + vet1[i].valor + "'>" + vet1[i].simbolo + "</option>"
-			}
-
-			unidade_para = [[
-				{'simbolo': 'km', 'valor': 'n / 1000'},
-				{'simbolo': 'm', 'valor': 'n'},
-				{'simbolo': 'cm', 'valor': 'n / 0.01'},
-				{'simbolo': 'mm', 'valor': 'n / 0.001'},
-				{'simbolo': 'inch', 'valor': 'n / (1 / 0.0254)'},
-				{'simbolo': 'mi', 'valor': 'n / (1609.344)'},
-			], [
-				{'simbolo': 'km²', 'valor': 'n / 1000000'},
-				{'simbolo': 'm²', 'valor': 'n'},
-				{'simbolo': 'cm²', 'valor': 'n / 0.0001'},
-				{'simbolo': 'mm²', 'valor': 'n / 0.000001'},
-				{'simbolo': 'ha', 'valor': 'n / 10000'},
-			], [
-				{'simbolo': 'km³', 'valor': 'n / 1000000000'},
-				{'simbolo': 'm³', 'valor': 'n'},
-				{'simbolo': 'cm³', 'valor': 'n / 0.000001'},
-				{'simbolo': 'mm³', 'valor': 'n / 0.00000001'},
-				{'simbolo': 'L', 'valor': 'n / 0.001'},
-				{'simbolo': 'mL', 'valor': 'n / 0.000001'},
-			], [
-				{'simbolo': 't', 'valor': 'n / 1000000'},
-				{'simbolo': 'kg', 'valor': 'n / 1000'},
-				{'simbolo': 'g', 'valor': 'n'},
-				{'simbolo': 'mg', 'valor': 'n / 0.001'},
-			], [
-				{'simbolo': 'd', 'valor': 'n / (24 * 3600)'},
-				{'simbolo': 'h', 'valor': 'n / 3600'},
-				{'simbolo': 'min', 'valor': 'n / 60'},
-				{'simbolo': 's', 'valor': 'n'},
-				{'simbolo': 'ms', 'valor': 'n / 0.001'},
-			], [
-				{'simbolo': 'deg', 'valor': 'n'},
-				{'simbolo': 'grad', 'valor': 'n / (200 / 180)'},
-				{'simbolo': 'rad', 'valor': 'n / (Math.PI / 180)'},
-			], [
-				{'simbolo': 'C', 'valor': 'n'},
-				{'simbolo': 'F', 'valor': '1.8 * n + 32'},
-				{'simbolo': 'K', 'valor': 'n + 273.15'},
-			]]
-
-			vet2 = unidade_para[cat]
-
-			document.getElementById('unidade_para_1').innerHTML = "<select id='unidade_para'></select>"
-
-			for (i = 0; i < vet2.length; i++) {
-				document.getElementById('unidade_para').innerHTML += "<option value='" + vet2[i].valor + "'>" + vet2[i].simbolo + "</option>"
-			}
-
-			document.getElementById('botao').innerHTML = "<button onclick='converte()'>Converter</button>"
-		}
-
-		function converte() {
-			n0 = round(document.getElementById('num').value)
-			
-			unidade_de = document.getElementById('unidade_de').value
-			c1 = unidade_de.replace('n', n0)
-			n1 = round(eval(c1))
-
-			console.log(unidade_de)
-
-			unidade_para = document.getElementById('unidade_para').value
-			c2 = unidade_para.replace('n', n1)
-			n2 = round(eval(c2))
-
-			console.log(unidade_para)
-			
-			document.getElementById('resultado_conversao').innerHTML = "Resultado: " + round(n2)
-		}
-	</script>
+	<meta name="viewport" content="width=device-width, user-scalable=no">
+	<title>Ferramentas matemáticas</title>
 </head>
 <body>
-	<h1>Ferramentas</h1>
-	<select id="opcao" onload="carregaCalculadora()" onchange="selecionaCalculadora()">
-		<option value="0" default>Selecione a ferramenta...</option>
-		<option value="1">Calculadora</option>
-		<option value="2">Conversor</option>
-	</select>
-	<div id="inicio">
-		<h2>Introdução</h2>
-		<p>Basta selecionar a ferramenta acima e usar.</p>
-	</div>
-	<div id="calculadora">
+    <h1>Ferramentas matemáticas</h1>
+    <select id="ferramenta" onchange="mudaFerramenta()">
+        <option value="0">Calculadora</option>
+        <option value="1">Conversor</option>
+        <option value="2">Estatística</option>
+        <option value="3">Programador</option>
+    </select>
+	<div id="calculadora" class="tela">
 		<h2>Calculadora</h2>
 		<p>Digite dois números, pressione Calcular e deixe que a calculadora realize as principais operações.</p>
-		<input type="number" id="num_a" placeholder="Número a..." value="0">
-		<input type="number" id="num_b" placeholder="Número b..." value="0">
-		<button onclick="resp()">Calcular</button>
-		<div id="resultado_calculo"></div>
+		<button onclick="limpaTudo()">Limpar</button>
+		<button onclick="processaCalculadora()">Calcular</button>
+		<input type="number" id="numero01" placeholder="Número a">
+		<input type="number" id="numero02" placeholder="Número b">
 	</div>
-	<div id="conversor">
+	<div id="conversor" class="tela">
 		<h2>Conversor</h2>
-		<p>Digite um número, selecione a grandeza, selecione as unidades e aperte Converter.</p>
-		<input type="number" id="num" placeholder="Número..." value="0"><br>
-		<select id="cat" onload="carrega()" onchange="carrega()">
-			<option value="0" default>Selecione a categoria de unidades...</option>
-			<option value="1">Comprimento</option>
-			<option value="2">Área</option>
-			<option value="3">Volume</option>
-			<option value="4">Massa</option>
-			<option value="5">Tempo</option>
-			<option value="6">Ângulo</option>
-			<option value="7">Temperatura</option>
-		</select>
-		<div id="unidade_de_1"></div>
-		<div id="unidade_para_1"></div>
-		<div id="botao"></div>
-		<div id="resultado_conversao"></div>
+		<p>Digite um número, selecione a grandeza e as unidades e selecione o botão Converter.</p>
+		<button onclick="limpaTudo()">Limpar tudo</button>
+		<button onclick="processaConversor()">Converter</button>
+		<input type="number" id="numero00" placeholder="Número" value="0">
+        <select id="grandeza" onchange="mudaConversor()"></select>
+        <select id="unidade"></select>
 	</div>
-</body>
+	<div id="estatistica" class="tela">
+		<h2>Estatística</h2>
+		<p>Insira uma lista de números e pressione Calcular.</p>
+		<button onclick="limpaTudo()">Limpar tudo</button>
+		<button onclick="processaEstatistica()">Calcular</button>
+		<button onclick="acrescentaEstatistica()">Adicionar</button>
+        <div id="entradas"></div>
+	</div>
+    <div id="programador" class="tela">
+		<h2>Programador</h2>
+		<p>Insira dois números inteiros, a base desejada e pressione Calcular.</p>
+		<button onclick="limpaTudo()">Limpar tudo</button>
+		<button onclick="processaProgramador()">Calcular</button>
+		<input type="text" pattern="[0-9A-Fa-f]+" id="numeroprog01" placeholder="Número 01">
+		<input type="text" pattern="[0-9A-Fa-f]+" id="numeroprog02" placeholder="Número 02">
+        <select id="base">
+            <option value="2">Binário</option>
+            <option value="8">Octal</option>
+            <option value="10">Decimal</option>
+            <option value="16">Hexadecimal</option>
+        </select>
+	</div>
+    <h2>Resultado</h2>
+    <div id="resultado">
+        O resultado será exibido aqui.
+    </div>
+    <footer>
+        &copy; Arthur Estigarribia | <a href="https://sites.google.com/view/estaleiromatematico">Sobre</a>
+    </footer>
+    <style>
+        html {
+            font-family: 'Roboto', sans-serif;
+            padding-left: 10%;
+            padding-right: 10%;
+            padding-top: 10pt;
+            padding-bottom: 10pt;
+        }
+            
+        h1 {
+            font-family: 'Teko', sans-serif;
+            font-size: 30pt;
+            font-weight: bold;
+        }
 
+        h2 {
+            font-family: 'Teko', sans-serif;
+            font-size: 15pt;
+            text-decoration: underline;
+        }
+        
+        p {
+            font-size: 12pt;
+        }
+
+        footer {
+            font-size: 10pt;
+            padding-top: 30pt;
+            padding-bottom: 10pt;
+        }
+
+        #resultado {
+            font-size: 12pt;
+        }
+
+        .ferramentas {
+            display: none;
+        }
+
+        input, select, button {
+            font-size: 12pt;
+            padding-top: 5pt;
+            padding-bottom: 5pt;
+            width: 100%;
+        }
+    </style>
+    <script>
+        // Métodos auxiliares
+        function fatorial(numero) {
+            if (numero == 0 || numero == 1) {
+                return 1
+            } else if (numero % 1 != 0 || numero < 0) {
+                return NaN
+            } else {
+                let fat = 1
+
+                for (let i = 1; i <= numero; i++) {
+                    fat = fat * i
+                }
+
+                return fat
+            }
+        }
+
+        function corrige(numero, precisao = 12) {
+            if (typeof numero != "number" || typeof precisao != "number" || precisao % 1 != 0 || precisao < 0 || precisao > 15) {
+                return "Número inválido"
+            }
+
+            return numero.toFixed(precisao)
+        }
+
+        // Calculadora
+        function processaCalculadora() {
+            let a = parseFloat(document.getElementById("numero01").value)
+            let b = parseFloat(document.getElementById("numero02").value)
+
+            let resultado = {
+                "operacao_soma": corrige(a + b),
+                "operacao_subtracao": corrige(a - b),
+                "operacao_multiplicacao": corrige(a * b),
+                "operacao_divisao": corrige(a / b, 0),
+                "operacao_quociente": corrige(a / b),
+                "operacao_resto": corrige(a % b),
+                "operacao_potencia": corrige(a ** b),
+                "operacao_raiz": corrige(a ** (1 / b)),
+                "operacao_logaritmo": corrige(Math.log10(a) / Math.log10(b)),
+                "porcentagem_taxa_a": corrige(a / 100),
+                "porcentagem_parte": corrige(a * b / 100),
+                "porcentagem_aumento": corrige(b * (1 + a / 100)),
+                "porcentagem_desconto": corrige(b * (1 - a / 100)),
+                "funcao_sqrt_a": corrige(Math.sqrt(a)),
+                "funcao_abs_a": corrige(Math.abs(a)),
+                "funcao_exp_a": corrige(Math.exp(a)),
+                "funcao_ln_a": corrige(Math.log(a)),
+                "funcao_log10_a": corrige(Math.log10(a)),
+                "trigonometria_sin_a": corrige(Math.sin(a)),
+                "trigonometria_cos_a": corrige(Math.cos(a)),
+                "trigonometria_tan_a": corrige(Math.tan(a)),
+                "trigonometria_inversa_sin_a": corrige(Math.asin(a)),
+                "trigonometria_inversa_cos_a": corrige(Math.acos(a)),
+                "trigonometria_inversa_tan_a": corrige(Math.atan(a)),
+                "trigonometria_sinh_a": corrige(Math.sinh(a)),
+                "trigonometria_cosh_a": corrige(Math.cosh(a)),
+                "trigonometria_tanh_a": corrige(Math.tanh(a)),
+                "trigonometria_inversa_sinh_a": corrige(Math.asinh(a)),
+                "trigonometria_inversa_cosh_a": corrige(Math.acosh(a)),
+                "trigonometria_inversa_tanh_a": corrige(Math.atanh(a)),
+                "bhaskara_delta": corrige(a * a - 4 * b),
+                "bhaskara_raiz_real_1": corrige((-a + Math.sqrt(a * a - 4 * b)) / 2),
+                "bhaskara_raiz_real_2": corrige((-a - Math.sqrt(a * a - 4 * b)) / 2),
+                "pitagoras_hipotenusa": corrige(Math.sqrt(a * a + b * b)),
+                "pitagoras_cateto": corrige(Math.sqrt(Math.abs(a * a - b * b))),
+                "contagem_fatorial_a": corrige(fatorial(a)),
+                "contagem_permutacoes": corrige(fatorial(a) / fatorial(a - b)),
+                "contagem_combinacoes": corrige(fatorial(a) / (fatorial(b) * fatorial(a - b))),
+            }
+
+            let texto = ""
+            
+            for (let i in resultado) {
+                if (resultado.hasOwnProperty(i)) {
+                    texto += "<b>" + i + "</b>:<br>" + resultado[i] + "<br>"
+                }
+            }
+
+            document.getElementById("resultado").innerHTML = texto
+        }
+
+        // Conversor
+        let biblioteca = [
+                {
+                    "grandeza": 'Comprimento',
+                    "unidades": [
+                        {"simbolo": 'km', "de": 'n * 1000', "para": 'n / 1000'},
+                        {"simbolo": 'm', "de": "n", "para": "n"},
+                        {"simbolo": 'cm', "de": 'n / 100', "para": 'n * 100'},
+                        {"simbolo": 'mm', "de": 'n / 1000', "para": 'n * 1000'},
+                        {"simbolo": 'inch', "de": 'n * 0.0254', "para": 'n / 0.0254'},
+                        {"simbolo": 'mi', "de": 'n * 1609.344', "para": 'n / 1609.344'},
+                    ]
+                }, {
+                    "grandeza": 'Área',
+                    "unidades": [
+                        {"simbolo": 'km²', "de": 'n * 1000000', "para": 'n / 1000000'},
+                        {"simbolo": 'm²', "de": "n", "para": "n"},
+                        {"simbolo": 'cm²', "de": 'n / 10000', "para": 'n * 10000'},
+                        {"simbolo": 'mm²', "de": 'n / 1000000', "para": 'n * 1000000'},
+                        {"simbolo": 'ha', "de": 'n * 10000', "para": 'n / 10000'},
+                    ]
+                }, {
+                    "grandeza": 'Volume',
+                    "unidades": [
+                        {"simbolo": 'km³', "de": 'n * 1000000000', "para": 'n / 1000000000'},
+                        {"simbolo": 'm³', "de": "n", "para": "n"},
+                        {"simbolo": 'cm³', "de": 'n / 1000000', "para": 'n * 1000000'},
+                        {"simbolo": 'mm³', "de": 'n / 1000000000', "para": 'n * 1000000000'},
+                        {"simbolo": 'L', "de": 'n / 1000', "para": 'n * 1000'},
+                        {"simbolo": 'mL', "de": 'n / 1000000', "para": 'n * 1000000'},
+                    ]
+                }, {
+                    "grandeza": 'Massa',
+                    "unidades": [
+                        {"simbolo": 't', "de": 'n * 1000000', "para": 'n / 1000000'},
+                        {"simbolo": 'kg', "de": 'n * 1000', "para": 'n / 1000'},
+                        {"simbolo": 'g', "de": "n", "para": "n"},
+                        {"simbolo": 'mg', "de": 'n / 1000', "para": 'n * 1000'},
+                        {"simbolo": 'mcg', "de": 'n / 1000000', "para": 'n * 1000000'},
+                        {"simbolo": 'oz', "de": 'n * 28.3495', "para": 'n / 28.3495'},
+                    ]
+                }, {
+                    "grandeza": 'Tempo',
+                    "unidades": [
+                        {"simbolo": 'd', "de": 'n * 86400', "para": 'n / 86400'},
+                        {"simbolo": 'h', "de": 'n * 3600', "para": 'n / 3600'},
+                        {"simbolo": 'min', "de": 'n * 60', "para": 'n / 60'},
+                        {"simbolo": 's', "de": "n", "para": "n"},
+                        {"simbolo": 'ms', "de": 'n / 1000', "para": 'n * 1000'},
+                    ]
+                }, {
+                    "grandeza": 'Ângulo',
+                    "unidades": [
+                        {"simbolo": 'deg', "de": "n", "para": "n"},
+                        {"simbolo": 'grad', "de": 'n * (180 / 200)', "para": 'n * (200 / 180)'},
+                        {"simbolo": 'rad', "de": 'n * (180 / Math.PI)', "para": 'n * (Math.PI / 180)'},	
+                    ]
+                }, {
+                    "grandeza": 'Temperatura',
+                    "unidades": [
+                        {"simbolo": 'C', "de": "n", "para": "n"},
+                        {"simbolo": 'F', "de": '(5 / 9) * (n - 32)', "para": '(9 / 5) * n + 32'},
+                        {"simbolo": 'K', "de": 'n - 273.15', "para": 'n + 273.15'},
+                    ]
+                }, {
+                    "grandeza": 'Dados',
+                    "unidades": [
+                        {"simbolo": 'bit', "de": "n", "para": "n"},
+                        {"simbolo": 'B', "de": 'n * (2 ** 3)', "para": 'n / (2 ** 3)'},
+                        {"simbolo": 'kB', "de": 'n * (2 ** 13)', "para": 'n / (2 ** 13)'},
+                        {"simbolo": 'MB', "de": 'n * (2 ** 23)', "para": 'n / (2 ** 23)'},
+                        {"simbolo": 'GB', "de": 'n * (2 ** 33)', "para": 'n / (2 ** 33)'},
+                        {"simbolo": 'TB', "de": 'n * (2 ** 43)', "para": 'n / (2 ** 43)'},
+                        {"simbolo": 'PB', "de": 'n * (2 ** 53)', "para": 'n / (2 ** 53)'},
+                        {"simbolo": 'EB', "de": 'n * (2 ** 63)', "para": 'n / (2 ** 63)'},
+                    ]
+                }, {
+                    "grandeza": 'Velocidade',
+                    "unidades": [
+                        {"simbolo": 'km/h', "de": "n", "para": "n"},
+                        {"simbolo": 'm/s', "de": 'n / 3.6', "para": 'n * 3.6'},
+                        {"simbolo": 'cm/s', "de": 'n / 360', "para": 'n * 360'},
+                        {"simbolo": 'mph', "de": 'n * 1.609344', "para": 'n / 1.609344'},
+                        {"simbolo": 'no', "de": 'n * 1.852', "para": 'n / 1.852'},
+                    ]
+                }, {
+                    "grandeza": 'Densidade',
+                    "unidades": [
+                        {"simbolo": 'kg/m³', "de": 'n / 1000', "para": 'n * 1000'},
+                        {"simbolo": 'g/cm³', "de": "n", "para": "n"},
+                        {"simbolo": 'g/mL', "de": "n", "para": "n"},
+                    ]
+                }, {
+                    "grandeza": 'Energia',
+                    "unidades": [
+                        {"simbolo": 'J', "de": "n", "para": "n"},
+                        {"simbolo": 'cal', "de": 'n * 4.184', "para": 'n / 4.184'},
+                        {"simbolo": 'kcal', "de": 'n * 4184', "para": 'n / 4184'},
+                        {"simbolo": 'kWh', "de": 'n * 3600000', "para": 'n / 3600000'},
+                    ]
+                }
+            ]
+
+        function mudaConversor() {
+            document.getElementById("resultado").innerHTML = "O resultado será exibido aqui."
+
+            let seletorGrandeza = document.getElementById("grandeza")
+
+            let unidades = biblioteca[seletorGrandeza.value]["unidades"]
+            let simbolos = []
+
+            for (let i = 0; i < unidades.length; i++) {
+                let item = unidades[i]
+                simbolos[simbolos.length] = item['simbolo']
+            }
+            
+            let seletorUnidade = document.getElementById("unidade")
+            seletorUnidade.innerHTML = ""
+
+            for (let i = 0; i < simbolos.length; i++) {
+                let item = document.createElement("option")
+                item.value = i
+                item.innerHTML = simbolos[i]
+
+                seletorUnidade.appendChild(item)
+            }
+
+            seletorUnidade.value = 0
+        }
+
+        function iniciaConversor() {
+            document.getElementById("resultado").innerHTML = "O resultado será exibido aqui."
+
+            let rotulos = []
+
+            for (let i = 0; i < biblioteca.length; i++) {
+                let item = biblioteca[i]
+                rotulos[rotulos.length] = item['grandeza']
+            }
+
+            let seletorGrandeza = document.getElementById("grandeza")
+            seletorGrandeza.innerHTML = ""
+
+            for (let i = 0; i < rotulos.length; i++) {
+                let item = document.createElement("option")
+                item.value = i
+                item.innerHTML = rotulos[i]
+
+                seletorGrandeza.appendChild(item)
+            }
+
+            seletorGrandeza.value = 0
+
+            mudaConversor()
+        }
+
+        function processaConversor() {
+            let numero = parseFloat(document.getElementById("numero00").value)
+
+            let grandeza = parseInt(document.getElementById("grandeza").value)
+            let origem = parseInt(document.getElementById("unidade").value)
+
+            let n = numero
+
+            let fatorDe = biblioteca[grandeza]["unidades"][origem]["de"]
+            let n1 = eval(fatorDe)
+
+            let resultados = []
+            let unidades = biblioteca[grandeza]["unidades"]
+
+            for (let i = 0; i < unidades.length; i++) {
+                let unidade = unidades[i]
+
+                let fatorPara = unidade["para"]
+                let simbolo = unidade["simbolo"]
+
+                n = n1
+                let n2 = eval(fatorPara)
+
+                resultados[resultados.length] = [corrige(n2), simbolo]
+            }
+
+            let texto = ""
+
+            for(let i = 0; i < resultados.length; i++) {
+                texto += resultados[i][0] + " " + resultados[i][1] + "<br>"
+            }
+
+            document.getElementById("resultado").innerHTML = texto
+        }
+
+        // Estatística
+        function tem(elemento, lista) {
+            for (let i = 0; i <= lista.length; i++) {
+                if (elemento == lista[i]) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        function listaParaTabela(lista) {
+            if (!Array.isArray(lista)) {
+                return;
+            }
+
+            let classes = [];
+            let frequencias = [];
+
+            for (let i = 0; i < lista.length; i++) {
+                if (!tem(lista[i], classes)) {
+                    classes[classes.length] = lista[i];
+                    frequencias[frequencias.length] = 1;
+                } else {
+                    for (let j = 0; j < classes.length; j++) {
+                        if (classes[j] == lista[i]) {
+                            frequencias[j] += 1;
+                        }
+                    }
+                }
+            }
+
+            registros = []
+
+            for (let i = 0; i < classes.length; i++) {
+                registros[registros.length] = {
+                    "classe": classes[i],
+                    "frequencia": frequencias[i],
+                }
+            }
+
+            return registros;
+        }
+
+        function classes(lista) {
+            let t = listaParaTabela(lista);
+            let x = [];
+
+            for (let i = 0; i < t.length; i++) {
+                x[x.length] = t[i].classe;
+            }
+
+            return x;
+        }
+
+        function frequencias(lista) {
+            let t = listaParaTabela(lista);
+            let x = [];
+
+            for (let i = 0; i < t.length; i++) {
+                x[x.length] = t[i].frequencia;
+            }
+
+            return x;
+        }
+
+        function soma(lista) {
+            let s = 0;
+
+            for (let i = 0; i < lista.length; i++) {
+                s += lista[i];
+            }
+
+            return s;
+        }
+
+        function mediana(lista) {
+            let x = classes(lista.sort());
+            let f = frequencias(lista.sort());
+
+            let acumulada = [];
+
+            for (let i = 0; i < x.length; i++) {
+                acumulada[i] = 0;
+            }
+
+            for (let i = 0; i < x.length; i++) {
+                for (let j = 0; j <= i; j++) {
+                    acumulada[i] += f[j];
+                }
+            }
+
+            let meio = soma(f) / 2;
+
+            let i = 0;
+
+            while (i < acumulada.length) {
+                if (acumulada[i] > meio) {
+                    return x[i];
+                    break;
+                } else if (acumulada[i] == meio) {
+                    return (x[i] + x[i + 1]) / 2;
+                    break;
+                }
+
+                i++;
+            }
+
+            return;
+        }
+
+        function moda(lista) {
+            let x = classes(lista);
+            let f = frequencias(lista);
+
+            let modal = f[0];
+
+            for (let i = 0; i < x.length; i++) {
+                if (f[i] > modal) {
+                    modal = x[i];
+                }
+            }
+
+            return modal;
+        }
+
+        function mostraTabela(lista) {
+            let x = classes(lista);
+            let f = frequencias(lista);
+
+            let texto = "<table><th><tr><td>Classe<td></td><td>Frequência</td></tr></th>";
+
+            for (let i = 0; i < x.length; i++) {
+                texto += `<tr><td>${x[i]}</td><td>${f[i]}</td></tr>`;
+            }
+
+            texto += "</table>";
+
+            return texto;
+        }
+
+        function processaEstatistica(lista) {
+            if (!Array.isArray(lista)) {
+                return
+            }
+
+            let quantidade = lista.length;
+            let soma = 0.0;
+            let somaquad = 0.0;
+            let maior = lista[0];
+            let menor = lista[0];
+
+            for (let i = 0; i < lista.length; i++) {
+                soma += lista[i]
+                somaquad += (lista[i] ** 2)
+
+                if (lista[i] > maior) {
+                    maior = lista[i]
+                }
+
+                if (lista[i] < menor) {
+                    menor = lista[i]
+                }
+            }
+
+            let media = soma / quantidade
+            let desvio = Math.sqrt(Math.abs(media ** 2 - somaquad / quantidade))
+
+            let t = listaParaTabela(lista);
+            
+            let x = [];
+            let f = [];
+
+            let registros = t.length;
+
+            let mod = moda(lista);
+            let med = mediana(lista);
+
+            let operacoes = {
+                "quantidade": corrige(quantidade),
+                "soma": corrige(soma),
+                "media": corrige(media),
+                "desvio": corrige(desvio),
+                "maximo": corrige(maior),
+                "minimo": corrige(menor),
+                "classes": corrige(registros),
+                "mediana": corrige(med),
+                "moda": corrige(mod),
+                "tabela": mostraTabela(lista),
+            }
+
+            let texto = ""
+            let chaves = Object.keys(operacoes)
+
+            for(let i = 0; i < chaves.length; i++) {
+                valor = operacoes[chaves[i]]
+                texto += "<b>" + chaves[i] + ":</b><br>" + valor + "<br>"
+            }
+
+            document.getElementById("resultado").innerHTML = texto
+        }
+
+        function acrescentaEstatistica() {
+            let entrada = document.createElement("input")
+
+            entrada.className = "dados"
+            entrada.type = "number"
+            entrada.placeholder = "Número"
+            entrada.value = 0
+
+            document.getElementById("entradas").appendChild(entrada)
+        }
+
+        // Programador
+        function exibeProgramador(numero, base) {
+            try {
+                if (typeof numero != "number" || numero == NaN || numero == Infinity) {
+                    return NaN
+                }
+
+                return Math.floor(numero).toString(base)
+            } catch(err) {
+                return NaN
+            }
+        }
+
+        function validaProgramador(entrada, base) {
+            let caracteres = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f']
+
+            let b = false
+
+            for (let i = 0; i < entrada.toString().length; i++) {
+                for (let j = 0; j < caracteres.length; j++) {
+                    if (entrada[i] == caracteres[j].toUpperCase() && j < base) {
+                        b = true
+                        break
+                    }
+                }
+            }
+
+            return b
+        }
+
+        function processaProgramador() {
+            let entrada1 = document.getElementById("numeroprog01").value
+            let entrada2 = document.getElementById("numeroprog02").value
+
+            let base = parseInt(document.getElementById("base").value)
+
+            let n1 = parseInt(entrada1, base)
+            let n2 = parseInt(entrada2, base)
+
+            let resultado = {
+                "programador_soma": exibeProgramador(n1 + n2, base),
+                "programador_subtracao": exibeProgramador(n1 - n2, base),
+                "programador_multiplicacao": exibeProgramador(n1 * n2, base),
+                "programador_divisao": exibeProgramador(n1 / n2, base),
+                "programador_resto": exibeProgramador(n1 % n2, base),
+                "programador_potencia": exibeProgramador(n1 ** n2, base),
+            }
+                
+            let texto = ""
+            
+            for (let i in resultado) {
+                if (resultado.hasOwnProperty(i)) {
+                    texto += "<b>" + i + "</b>:<br>" + resultado[i] + "<br>"
+                }
+            }
+
+            document.getElementById("resultado").innerHTML = texto
+        }
+
+        // Ferramentas
+        function limpaTudo() {
+            document.getElementById("numero00").value = 0
+            document.getElementById("numero01").value = 0
+            document.getElementById("numero02").value = 0
+            document.getElementById("numeroprog01").value = 0
+            document.getElementById("numeroprog02").value = 0
+
+            document.getElementById("resultado").innerHTML = "O resultado será exibido aqui."
+
+            entradas = document.getElementById("entradas")
+
+            while (entradas.firstChild) {
+                entradas.removeChild(entradas.firstChild);
+            }
+        }
+
+        function mudaFerramenta() {
+            limpaTudo()
+
+            let opcao = parseInt(document.getElementById("ferramenta").value || 0)
+
+            let telas = document.getElementsByClassName("tela")
+
+            for (let i = 0; i < telas.length; i++) {
+                telas[i].style.display = (opcao == i ? 'block' : 'none')
+            }
+
+            if (opcao === 1) {
+                iniciaConversor()
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', mudaFerramenta())
+    </script>
+</body>
 </html>
