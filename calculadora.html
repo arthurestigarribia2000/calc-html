@@ -23,7 +23,7 @@
 </div>
 <div id="conversor" class="tela">
 	<h2>Conversor</h2>
-	<p>Digite um número, selecione a grandeza e as unidades e selecione o botão Converter.</p>
+	<p>Digite um número, selecione a grandeza e as unidades e selecione o botão Converter. É possível inserir entradas em notação científica decimal (exemplo: -1.41421e+6 ou 3.14159e-2).</p>
 	<button onclick="limpaTudo()">Limpar tudo</button><br>
 	<button onclick="processaConversor()">Converter</button><br>
 	<input type="number" id="numero00" placeholder="Número" value="0"><br>
@@ -254,6 +254,7 @@ let biblioteca = [
 			{"simbolo": 'cal', "de": 'n * 4.184', "para": 'n / 4.184'},
 			{"simbolo": 'kcal', "de": 'n * 4184', "para": 'n / 4184'},
 			{"simbolo": 'kWh', "de": 'n * 3600000', "para": 'n / 3600000'},
+			{"simbolo": 'eV', "de": 'n / 0.0000000000000000001602177', "para": 'n * 0.0000000000000000001602177'},
 		]
 	}
 ]
