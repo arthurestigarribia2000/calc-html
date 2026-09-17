@@ -12,6 +12,7 @@
 	<option value="1">Conversor</option>
 	<option value="2">Estatística</option>
 	<option value="3">Programador</option>
+	<option value="4">Ajuda</option>
 </select>
 <div id="calculadora" class="tela">
 	<h2>Calculadora</h2>
@@ -23,7 +24,7 @@
 </div>
 <div id="conversor" class="tela">
 	<h2>Conversor</h2>
-	<p>Digite um número, selecione a grandeza e as unidades e selecione o botão Converter. É possível inserir entradas em notação científica decimal (exemplo: -1.41421e+6 ou 3.14159e-2).</p>
+	<p>Digite um número, selecione a grandeza e as unidades e selecione o botão Converter.</p>
 	<button onclick="limpaTudo()">Limpar tudo</button><br>
 	<button onclick="processaConversor()">Converter</button><br>
 	<input type="number" id="numero00" placeholder="Número" value="0"><br>
@@ -51,6 +52,12 @@
 		<option value="10">Decimal</option>
 		<option value="16">Hexadecimal</option>
 	</select>
+</div>
+<div id="ajuda" class="tela">
+	<h2>Ajuda</h2>
+	<p>No modo Conversor, é possível inserir entradas em notação científica decimal (exemplo: -1.41421e+6 ou 3.14159e-2), mas a saída é limitada a 12 casas decimais.</p>
+	<p>No modo Programador, é possível inserir entradas nas bases fornecidas, mas não há suporte para partes fracionárias na saída.</p>
+	<p>Saídas inválidas exibirão o erro NaN em qualquer modo.</p>
 </div>
 <h2>Resultado</h2>
 <div id="resultado">
