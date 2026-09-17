@@ -57,7 +57,7 @@
 O resultado será exibido aqui.
 </div>
 <footer>
-© Arthur Estigarribia · <a href="https://arthurestigarribia2000.wordpress.com/">Sobre</a>
+	&copy; Arthur Estigarribia | <a href="https://sites.google.com/view/arthur-estigarribia/">Sobre</a>
 </footer>
 <style>
 .ferramentas {
@@ -66,6 +66,10 @@ O resultado será exibido aqui.
 
 input, select, button {
 	width: 100%;
+}
+
+html {
+	padding: 2.5%;
 }
 </style>
 <script>
@@ -485,9 +489,12 @@ function mostraTabela(lista) {
 	return texto
 }
 
-function processaEstatistica(lista) {
-	if (!Array.isArray(lista)) {
-		return
+function processaEstatistica() {
+	let entradas = document.getElementsByClassName("dados")
+	let lista = []
+
+	for(let i = 0; i < entradas.length; i++) {
+		lista[lista.length] = parseFloat(entradas[i].value)
 	}
 
 	let quantidade = lista.length;
